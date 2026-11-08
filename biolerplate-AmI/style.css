@@ -1,0 +1,37 @@
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  font-family: system-ui, helvetica, arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+}
+
+main {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-style: italic;
+  color: #c43e00; /* darker orange: #ff6f00 fails contrast on white */
+}
+
+@media (prefers-color-scheme: dark) {
+  h1 {
+    color: #ff8f3a;
+  }
+}
+
+#status {
+  white-space: pre-line;
+  font-family: ui-monospace, monospace;
+}
+
+/* Camera and canvas output scale down on phones */
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}

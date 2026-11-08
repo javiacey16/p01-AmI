@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tutorial COCO-SSD - Ejercicios</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- CSS Styling -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- TensorFlow.js library -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"
+      type="text/javascript"
+    ></script>
+    <!-- Ejercicio 4: backend WebGPU (se carga después de tfjs) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu@4.22.0"
+    ></script>
+
+    <!-- COCO-SSD -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"
+    ></script>
+  </head>
+  <body>
+    <h1>Intelligent webcam with COCO-SSD</h1>
+    <div id="outputMessage">Wait for the COCO-SSD model to load before enabling the webcam and starting object detection</div>
+
+    <div class="controls">
+      <!-- Ejercicio 1: umbral configurable -->
+      <label for="threshold">Threshold: <span id="thresholdValue">0.66</span></label>
+      <input id="threshold" type="range" min="0" max="1" step="0.01" value="0.66" />
+
+      <!-- Ejercicio 2: filtrar por clase -->
+      <label for="classFilter">Class</label>
+      <select id="classFilter">
+        <option value="">All classes</option>
+      </select>
+
+      <!-- Ejercicio 4: backend -->
+      <label for="backend">Backend</label>
+      <select id="backend">
+        <option value="webgpu">webgpu</option>
+        <option value="webgl">webgl</option>
+        <option value="cpu">cpu</option>
+      </select>
+
+      <!-- Ejercicio 6: liberar el tensor de cada fotograma -->
+      <label><input id="disposeFrame" type="checkbox" checked /> frame.dispose()</label>
+    </div>
+
+    <!-- Ejercicios 4 y 6: rendimiento y memoria -->
+    <div id="stats">Backend: - | FPS: - | detect(): - ms | Tensors: -</div>
+
+    <section id="app">
+      <div id="liveView" class="camView">
+        <button id="btnEnableWebcam" disabled>Enable webcam</button>
+        <video id="webcam" autoplay muted width="640" height="480"></video>
+        <!-- Ejercicio 5: canvas superpuesto al vídeo -->
+        <canvas id="overlay" width="640" height="480"></canvas>
+      </div>
+    </section>
+
+    <!-- Ejercicio 3: historial de detecciones -->
+    <section id="historySection">
+      <h2>Last detections</h2>
+      <ol id="history"></ol>
+    </section>
+
+    <script src="index.js"></script>
+  </body>
+</html>

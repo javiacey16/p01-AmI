@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tutorial MobileNet - Ejercicios</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- CSS Styling -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- TensorFlow.js library -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"
+      type="text/javascript"
+    ></script>
+
+    <!-- MobileNet -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"
+    ></script>
+  </head>
+  <body>
+    <h1>Tutorial MobileNet</h1>
+    <!-- Placeholder div for output or log messages -->
+    <div id="outputMessage">Awaiting TF.js load</div>
+
+    <!-- Ejercicio 2: cambiar la imagen a clasificar -->
+    <div class="controls">
+      <label for="imgUrl">Image URL</label>
+      <input id="imgUrl" type="url" placeholder="https://..." />
+      <button id="btnLoadImg">Load image</button>
+    </div>
+
+    <img
+      id="img"
+      crossorigin
+      src="https://images.unsplash.com/photo-1562154411-dedf4b0c79bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2748&q=80"
+      width="252"
+      height="252"
+      alt="Image to classify"
+    />
+
+    <!-- Ejercicio 3: botón de clasificación -->
+    <div class="controls">
+      <button id="btnClassify" disabled>Classify</button>
+    </div>
+
+    <!-- Ejercicio 1: predicciones en la página -->
+    <ol id="results"></ol>
+
+    <script src="index.js"></script>
+  </body>
+</html>

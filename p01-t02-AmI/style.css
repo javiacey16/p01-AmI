@@ -1,0 +1,53 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+  color: #3d3d3d;
+}
+
+h1 {
+  font-style: italic;
+  color: #ff6f00;
+}
+
+h2 {
+  font-size: 1.1em;
+}
+
+video {
+  display: block;
+}
+
+.removed {
+  display: none;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1em;
+  align-items: center;
+  margin: 1em 0;
+}
+
+#stats {
+  font-family: monospace;
+  margin-bottom: 0.5em;
+}
+
+.camView {
+  position: relative;
+  width: 640px;
+  max-width: 100%;
+  margin: 10px 0;
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+#btnEnableWebcam {
+  margin-bottom: 0.5em;
+}

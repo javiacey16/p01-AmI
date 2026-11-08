@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TensorFlow.js</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- TensorFlow.js, pinned (never @latest: backends must match the core version) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+
+    <!-- Optional extra backends (WebGL and CPU are already included above) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu@4.22.0/dist/tf-backend-webgpu.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@4.22.0/dist/tf-backend-wasm.min.js"></script>
+
+    <!-- Pre-trained models go here, e.g. for P1:
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
+    -->
+  </head>
+  <body>
+    <main>
+      <h1>TensorFlow.js</h1>
+      <p id="status" role="status">Loading TensorFlow.js…</p>
+    </main>
+
+    <!-- type="module": same pattern you'll use later with MediaPipe and Transformers.js -->
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
