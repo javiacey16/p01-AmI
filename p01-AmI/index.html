@@ -14,42 +14,77 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
   </head>
   <body>
-    <h1>Asistente del salón</h1>
-    <p id="status" role="status">Cargando el modelo COCO-SSD…</p>
-
-    <div class="controls">
-      <button id="btnStart" disabled>Activar webcam</button>
-
-      <label for="backend">Backend</label>
-      <select id="backend">
-        <option value="webgpu">webgpu</option>
-        <option value="webgl">webgl</option>
-        <option value="cpu">cpu</option>
-      </select>
-
-      <label for="threshold">Umbral: <span id="thresholdValue">0.50</span></label>
-      <input id="threshold" type="range" min="0.2" max="0.9" step="0.05" value="0.5" />
-    </div>
-
-    <div id="stats">Backend: - | FPS: - | detect(): - ms | Brillo: -</div>
-
-    <div class="layout">
-      <div class="camView">
-        <video id="webcam" autoplay muted playsinline></video>
-        <canvas id="overlay"></canvas>
+    <header class="topbar">
+      <div>
+        <h1>Asistente del salón</h1>
+        <p class="subtitle">Detección de objetos en tiempo real con COCO-SSD</p>
       </div>
+      <p id="status" role="status">Cargando el modelo COCO-SSD…</p>
+    </header>
+
+    <main class="layout">
+      <section class="main">
+        <div class="card controls">
+          <button id="btnStart" disabled>Activar webcam</button>
+
+          <div class="field">
+            <label for="backend">Backend</label>
+            <select id="backend">
+              <option value="webgpu">webgpu</option>
+              <option value="webgl">webgl</option>
+              <option value="cpu">cpu</option>
+            </select>
+          </div>
+
+          <div class="field grow">
+            <label for="threshold">Umbral de confianza: <span id="thresholdValue">0.50</span></label>
+            <input id="threshold" type="range" min="0.2" max="0.9" step="0.05" value="0.5" />
+          </div>
+        </div>
+
+        <div class="camView">
+          <p class="camPlaceholder">Activa la webcam para empezar</p>
+          <video id="webcam" autoplay muted playsinline></video>
+          <canvas id="overlay"></canvas>
+        </div>
+
+        <div class="stats">
+          <div class="card stat">
+            <span class="statLabel">Backend</span>
+            <span class="statValue" id="statBackend">-</span>
+          </div>
+          <div class="card stat">
+            <span class="statLabel">FPS</span>
+            <span class="statValue" id="statFps">-</span>
+          </div>
+          <div class="card stat">
+            <span class="statLabel">detect()</span>
+            <span class="statValue" id="statDetect">-</span>
+          </div>
+          <div class="card stat">
+            <span class="statLabel">Brillo</span>
+            <span class="statValue" id="statBrightness">-</span>
+          </div>
+        </div>
+      </section>
 
       <aside class="panel">
-        <h2>Avisos</h2>
-        <ul id="alerts"><li class="empty">Sin avisos</li></ul>
+        <section class="card">
+          <h2>Avisos</h2>
+          <ul id="alerts"><li class="empty">Sin avisos</li></ul>
+        </section>
 
-        <h2>Mando</h2>
-        <p id="remoteState">Aún no se ha visto</p>
+        <section class="card">
+          <h2>Mando</h2>
+          <p id="remoteState">Aún no se ha visto</p>
+        </section>
 
-        <h2>Objetos detectados</h2>
-        <ul id="objects"><li class="empty">Nada todavía</li></ul>
+        <section class="card">
+          <h2>Objetos detectados</h2>
+          <ul id="objects"><li class="empty">Nada todavía</li></ul>
+        </section>
       </aside>
-    </div>
+    </main>
 
     <script src="index.js"></script>
   </body>

@@ -2,7 +2,10 @@ const videoEl = document.querySelector("#webcam");
 const canvasEl = document.querySelector("#overlay");
 const ctx = canvasEl.getContext("2d");
 const statusEl = document.querySelector("#status");
-const statsEl = document.querySelector("#stats");
+const statBackendEl = document.querySelector("#statBackend");
+const statFpsEl = document.querySelector("#statFps");
+const statDetectEl = document.querySelector("#statDetect");
+const statBrightnessEl = document.querySelector("#statBrightness");
 const btnStart = document.querySelector("#btnStart");
 const backendEl = document.querySelector("#backend");
 const thresholdEl = document.querySelector("#threshold");
@@ -406,10 +409,10 @@ function updateStats(detectMs) {
     fps = fps ? 0.9 * fps + 0.1 * currentFps : currentFps;
   }
   lastFrameTime = now;
-  statsEl.textContent =
-    `Backend: ${tf.getBackend()} | FPS: ${fps.toFixed(1)} | ` +
-    `detect(): ${detectMs.toFixed(0)} ms | ` +
-    `Brillo: ${brightness === null ? "-" : brightness.toFixed(0)}`;
+  statBackendEl.textContent = tf.getBackend();
+  statFpsEl.textContent = fps.toFixed(1);
+  statDetectEl.textContent = `${detectMs.toFixed(0)} ms`;
+  statBrightnessEl.textContent = brightness === null ? "-" : brightness.toFixed(0);
 }
 
 /**
