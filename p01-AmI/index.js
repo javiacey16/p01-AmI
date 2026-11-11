@@ -318,9 +318,84 @@ function checkDrinkNearLaptop(visible, alerts) {
   }
 }
 
+const READING = {
+  darkBelow: 120, // brillo medio (0-255) por debajo del cual hay poca luz
+  bookMinScore: 0.3, // puntuación mínima de un libro (con poca luz sale baja)
+  memoryMs: 5_000, // persona y libro "siguen ahí" aunque fallen fotogramas
+  smoothing: 0.9, // peso del valor anterior en la media móvil del brillo
+};
+
+// Canvas pequeño fuera de pantalla: basta para estimar el brillo medio
+const lightCanvas = document.createElement("canvas");
+lightCanvas.width = 32;
+lightCanvas.height = 24;
+const lightCtx = lightCanvas.getContext("2d", { willReadFrequently: true });
+
+let brightness = null; // brillo suavizado; null hasta medir el primer fotograma
+let bookLastSeen = 0;
+
 /**
- * Updates the performance line: backend in use, FPS (moving average) and
- * how long the last detection took.
+ * Measures the average brightness of an image by scaling it down to a
+ * tiny canvas and averaging the luminance of its pixels.
+ * @param {HTMLVideoElement|HTMLCanvasElement|HTMLImageElement} source
+ *   Image to measure (normally the webcam video).
+ * @returns {number} Average brightness from 0 (black) to 255 (white).
+ */
+function measureBrightness(source) {
+  const { width, height } = lightCanvas;
+  lightCtx.drawImage(source, 0, 0, width, height);
+  const { data } = lightCtx.getImageData(0, 0, width, height);
+
+  let sum = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    // Luminancia percibida: el ojo es más sensible al verde que al azul
+    sum += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+  }
+  return sum / (data.length / 4);
+}
+
+/**
+ * Updates the smoothed brightness with the value of the current frame,
+ * using a moving average so that a single odd frame does not matter.
+ * @param {number} current - Brightness of the current frame (0-255).
+ * @returns {number} Smoothed brightness (0-255), also stored in `brightness`.
+ */
+function updateBrightness(current) {
+  brightness =
+    brightness === null
+      ? current
+      : READING.smoothing * brightness + (1 - READING.smoothing) * current;
+  return brightness;
+}
+
+/**
+ * Checks whether someone is reading with poor light: a person and a book
+ * were seen recently and the smoothed brightness is below the threshold.
+ * If so, adds an alert suggesting to turn on a lamp.
+ * @param {Array<{class: string, score: number, bbox: number[]}>} predictions
+ *   Raw detections returned by model.detect().
+ * @param {string[]} alerts - Alert list of the current frame; this function
+ *   may add a message to it.
+ * @returns {void}
+ */
+function checkLowLightReading(predictions, alerts) {
+  const now = Date.now();
+
+  if (predictions.some((p) => p.class === "book" && p.score >= READING.bookMinScore)) {
+    bookLastSeen = now;
+  }
+  // personLastSeen lo actualiza updateRemoteTracker en cada fotograma
+  const reading =
+    now - personLastSeen < READING.memoryMs && now - bookLastSeen < READING.memoryMs;
+
+  if (reading && brightness !== null && brightness < READING.darkBelow) {
+    alerts.push("Hay poca luz para leer. Enciende una lámpara.");
+  }
+}
+
+/**
+ * Updates the performance line: backend in use, FPS (moving average),
+ * how long the last detection took and the smoothed image brightness.
  * @param {number} detectMs - Duration of the last model.detect() call, in ms.
  * @returns {void}
  */
@@ -333,7 +408,8 @@ function updateStats(detectMs) {
   lastFrameTime = now;
   statsEl.textContent =
     `Backend: ${tf.getBackend()} | FPS: ${fps.toFixed(1)} | ` +
-    `detect(): ${detectMs.toFixed(0)} ms`;
+    `detect(): ${detectMs.toFixed(0)} ms | ` +
+    `Brillo: ${brightness === null ? "-" : brightness.toFixed(0)}`;
 }
 
 /**
@@ -360,6 +436,8 @@ async function detectLoop() {
     const alerts = [];
     updateRemoteTracker(predictions, visible, alerts);
     checkDrinkNearLaptop(visible, alerts);
+    updateBrightness(measureBrightness(videoEl));
+    checkLowLightReading(predictions, alerts);
     renderAlerts(alerts);
     updateStats(detectMs);
   }
