@@ -9,6 +9,7 @@ Ejercicios de visión por computador en el navegador con TensorFlow.js y modelos
 | [`biolerplate-AmI`](biolerplate-AmI) | Plantilla base: carga TensorFlow.js, permite elegir el backend y muestra un informe del entorno. |
 | [`p01-t01-AmI`](p01-t01-AmI) | Clasificación de imágenes con MobileNet. |
 | [`p01-t02-AmI`](p01-t02-AmI) | Detección de objetos en la webcam con COCO-SSD. |
+| [`p01-AmI`](p01-AmI) | Primera práctica: asistente del salón con COCO-SSD. Tiene su propio [README](p01-AmI/README.md). |
 
 ## Ejercicios
 
